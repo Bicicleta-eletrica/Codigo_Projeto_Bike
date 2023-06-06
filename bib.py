@@ -2,38 +2,47 @@ from getpass import getpass
 from hashlib import sha256
 
 
-def criar_conta(usuarios):
-    print("Crie sua conta: ")
+from getpass import getpass
+from hashlib import sha256
 
-    nome = input("Insira seu nome: ")
-    cpf = input("Insira seu CPF: ")
+class Usuario:
+    def __init__(self):
+        self.usuarios = []
 
-    # Verifica se o CPF já está cadastrado
-    for usuario in usuarios:
-        if usuario['cpf'] == cpf:
-            print("CPF já cadastrado, tente novamente!")
-            return
+    def criar_conta(self):
+        print("Crie sua conta: ")
+        nome = input("Insira seu nome: ")
+        cpf = input("Insira seu CPF: ")
 
-    senha = getpass("Insira sua senha: ")
-    senha_hash = sha256(senha.encode()).hexdigest()
+        # Verifica se o CPF já está cadastrado
+        for usuario in self.usuarios:
+            if usuario['cpf'] == cpf:
+                print("CPF já cadastrado, tente novamente!")
+                return
 
-    usuarios.append({'nome': nome, 'cpf': cpf, 'senha': senha_hash})
-    print("Conta criada com sucesso!")
+        senha = getpass("Insira sua senha: ")
+        senha_hash = sha256(senha.encode()).hexdigest()
+
+        self.usuarios.append({'nome': nome, 'cpf': cpf, 'senha': senha_hash})
+        print("Conta criada com sucesso!")
+
+    def conectar_conta(self):
+        print("Conecte-se à sua conta: ")
+
+        cpf = input("Insira seu CPF: ")
+        senha = getpass("Insira sua senha: ")
+        senha_hash = sha256(senha.encode()).hexdigest()
+
+        for usuario in self.usuarios:
+            if usuario['cpf'] == cpf and usuario['senha'] == senha_hash:
+                print("Conectado com sucesso!")
+                print("Escolha seu plano de locação:")
+                return
+
+        print("Usuário ou senha inválidos, tente novamente.")
 
 
-def conectar_conta(usuarios):
-    print("Conecte-se à sua conta: ")
 
-    cpf = input("Insira seu CPF: ")
-    senha = getpass("Insira sua senha: ")
-    senha_hash = sha256(senha.encode()).hexdigest()
-
-    for usuario in usuarios:
-        if usuario['cpf'] == cpf and usuario['senha'] == senha_hash:
-            print("Conectado com sucesso!")
-            print("Escolha seu plano de locação:")
-
-    print("Usuário ou senha inválidos, tente novamente.")
 
 
 def mostrar_planos(planos_loc):
